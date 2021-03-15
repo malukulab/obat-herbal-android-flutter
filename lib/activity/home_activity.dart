@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:obat_herbal_android/activity/herbs/show_activity.dart';
 import 'package:obat_herbal_android/widgets/cardpressable_herb.dart';
-import '../herb_repository_impl.dart';
+import 'package:obat_herbal_android/herb_repository_impl.dart';
 import './about_activity.dart';
 import 'herbs/edit_activity.dart';
 import 'herbs/creation_activity.dart';
@@ -12,6 +12,8 @@ class HomeActivity extends StatefulWidget {
   @override
   _HomeActivityState createState() => _HomeActivityState();
 }
+
+
 
 class _HomeActivityState extends State<HomeActivity> {
 
@@ -41,7 +43,7 @@ class _HomeActivityState extends State<HomeActivity> {
   }
 
 
-  void handleOnEditable(int? id) async {
+  void handleOnEditable(BuildContext context, int id) async {
     var herbExist = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -52,20 +54,48 @@ class _HomeActivityState extends State<HomeActivity> {
     if (herbExist != null) refreshListView();
   }
 
-  void handleToShowShowActivity(BuildContext context, int? id) async {
-     try {
-       Map<String, dynamic> _data = await herbRepository.findByid(id);
-       Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (BuildContext context) {
-              return HerbShowActivity(data: _data);
-            }
-          )
-        );
-     }catch (err) {
+  void handleToShowActivity(BuildContext context, int id) async {
+    try {
+      Map<String, dynamic> _data = await herbRepository.findByid(id);
+      Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return HerbShowActivity(data: _data);
+        }
+      )
+    );
+    }catch (err) {
+      // handle error implementation.
+    }
+  }
 
-     }
+  void handleOnDelete(BuildContext context, int id) async {
+    String? _message;
+
+    try {
+      bool isDeleted = await herbRepository.delete(id);
+       if (isDeleted) {
+          refreshListView();
+          _message = '👍 Data berhasil dihapus!';
+        }
+    } catch (err) {
+
+      _message = 'Terjadi kesalahan';
+
+    } finally {
+      ScaffoldMessenger.of(context)
+        .showSnackBar(
+          SnackBar(
+            content: Text(
+              _message!,
+              style: TextStyle(
+                color: Colors.red[400]
+              )
+            )
+          )
+      );
+    }
   }
 
 
@@ -82,31 +112,13 @@ class _HomeActivityState extends State<HomeActivity> {
           photo: rows[it]['photo'],
           padding: EdgeInsets.all(10.0),
           onEditable: () {
-
-            handleOnEditable(rows[it]['id']);
+            handleOnEditable(context, rows[it]['id']);
           },
           onDestroy: () async {
-            int id = rows[it]['id'];
-            bool isDeleted = await herbRepository.delete(id);
-
-            if (isDeleted) {
-              refreshListView();
-
-              ScaffoldMessenger.of(context)
-                .showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      '👍 Data berhasil dihapus!',
-                      style: TextStyle(
-                        color: Colors.red[400]
-                      )
-                    )
-                  )
-              );
-            }
+            handleOnDelete(context, rows[it]['id']);
           },
           onPressed: ()  {
-            handleToShowShowActivity(context, rows[it]['id']);
+            handleToShowActivity(context, rows[it]['id']);
           }
         );
       },

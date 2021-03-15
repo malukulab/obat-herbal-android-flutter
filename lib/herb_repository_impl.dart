@@ -4,8 +4,7 @@ import 'crud_repository.dart';
 import 'herb_repository.dart';
 import 'mysqlite_connection.dart';
 
-class HerbRepositoryImpl
-    implements HerbRepository, CrudRepository<Map<String, dynamic>> {
+class HerbRepositoryImpl implements HerbRepository, CrudRepository<Map<String, dynamic>> {
   final MySqliteConnection con = MySqliteConnection();
 
 
@@ -95,7 +94,7 @@ class HerbRepositoryImpl
   }
 
   @override
-  List search({title}) {
+  Future<List<Map<String, dynamic>>> search({title}) {
     // TODO: implement search
     throw UnimplementedError();
   }

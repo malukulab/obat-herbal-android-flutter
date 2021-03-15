@@ -10,20 +10,17 @@ import 'package:obat_herbal_android/widgets/textfield_bordered.dart';
 typedef FormSubmitedHandle = void Function(Map<String, dynamic> formData);
 
 class HerbFormActivity extends StatefulWidget {
-  final bool editable;
   final SimpleValidator? validator;
   final FormSubmitedHandle? onSubmit;
   final String labelTextSubmit;
   final Map<String, dynamic>? formData;
 
   HerbFormActivity({
-    Key? key,
-    this.editable = false,
     this.validator,
     this.onSubmit,
     this.labelTextSubmit = 'Submit',
     this.formData,
-  }) : super(key: key);
+  });
 
   @override
   _HerbFormActivityState createState() => _HerbFormActivityState();
@@ -41,7 +38,7 @@ class _HerbFormActivityState extends State<HerbFormActivity> {
   void initState() {
     super.initState();
 
-    if (widget.editable) {
+    if (widget.formData != null) {
       Map<String, dynamic> _formData = widget.formData!;
       _resolveImagePath = Future.value(_formData['photo']);
       textFieldTitle.text = _formData['title'];
@@ -52,8 +49,6 @@ class _HerbFormActivityState extends State<HerbFormActivity> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
-
     textFieldTitle.dispose();
     textFieldDescription.dispose();
     super.dispose();
@@ -108,8 +103,11 @@ class _HerbFormActivityState extends State<HerbFormActivity> {
               children: <Widget>[
                 _resolveImageOrFallbackBuild,
                 SizedBox(height: 12),
-                Text("""Tekan untuk sertakan/ganti gambar (opsional).
-                    """, style: TextStyle(color: Colors.grey[700])),
+                Text(
+                  """Tekan untuk sertakan/ganti gambar (opsional).
+                  """,
+                  style: TextStyle(color: Colors.grey[700])
+                ),
               ]
             ),
           )
@@ -124,42 +122,46 @@ class _HerbFormActivityState extends State<HerbFormActivity> {
       child: Form(
         key: _formKey,
         child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              GestureDetector(
-                  onTap: handleOnImagePicker,
-                  child: _buildImagePicker()),
-              SizedBox(height: 12),
-              // Form fields.
-              TextFieldBordered(
-                  labelText: 'Judul',
-                  hintText: 'Contoh: Obat mujarab untuk 😻.',
-                  controller: textFieldTitle,
-                  validator: (String? value) {
-                    widget.validator!.run(value);
-                    return widget.validator!.message;
-                  }),
-              SizedBox(height: 22),
-              TextFieldBordered(
-                  maxLines: 2,
-                  labelText: 'Deskripsi',
-                  hintText: 'Contoh: Recommended banget deh.',
-                  keyboardType: TextInputType.multiline,
-                  controller: textFieldDescription,
-                  validator: (String? value) {
-                    widget.validator!.run(value);
-                    return widget.validator!.message;
-                  }),
-              SizedBox(
-                height: 22,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            GestureDetector(
+              onTap: handleOnImagePicker,
+              child: _buildImagePicker()
+            ),
+            SizedBox(height: 12),
+            // Form fields.
+            TextFieldBordered(
+              labelText: 'Judul',
+              hintText: 'Contoh: Obat mujarab untuk 😻.',
+              controller: textFieldTitle,
+              validator: (String? value) {
+                return widget.validator!.run(value);
+              }
+            ),
+            SizedBox(height: 22),
+            TextFieldBordered(
+              maxLines: 2,
+              labelText: 'Deskripsi',
+              hintText: 'Contoh: Recommended banget deh.',
+              keyboardType: TextInputType.multiline,
+              controller: textFieldDescription,
+              validator: (String? value) {
+                return widget.validator!.run(value);
+              }
+            ),
+            SizedBox(
+              height: 22,
+            ),
+            MaterialButton(
+              child: Text(
+                widget.labelTextSubmit,
+                style: TextStyle(fontSize: 17, color: Colors.teal)
               ),
-              MaterialButton(
-                child: Text(widget.labelTextSubmit,
-                    style: TextStyle(fontSize: 17, color: Colors.teal)),
-                onPressed: handleOnSubmit,
-              )
-            ]),
+              onPressed: handleOnSubmit,
+            )
+          ]
+        ),
       ),
     );
   }

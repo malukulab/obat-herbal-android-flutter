@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 class HerbShowActivity extends StatelessWidget {
 
   final Map<String, dynamic>? data;
-  final String IMAGE_FALLBACK_PLECHOLDER = 'assets/images/placeholder.png';
+  // ignore: non_constant_identifier_names
+  final IMAGE_FALLBACK_PLACEHOLDER = 'assets/images/placeholder.png';
 
-  HerbShowActivity({Key? key, this.data}): super(key: key);
+  HerbShowActivity({this.data});
 
 
 
@@ -20,7 +21,7 @@ class HerbShowActivity extends StatelessWidget {
     }
 
     return <Widget> [
-      Image.asset(IMAGE_FALLBACK_PLECHOLDER),
+      Image.asset(IMAGE_FALLBACK_PLACEHOLDER),
       SizedBox(
         height: 10,
       ),

@@ -7,7 +7,7 @@ class HerbEditActivity extends StatefulWidget {
 
   final int? id;
 
-  HerbEditActivity({Key? key, this.id}): super(key: key);
+  HerbEditActivity({this.id});
 
   @override
   _HerbEditActivityState createState() => _HerbEditActivityState();
@@ -59,7 +59,6 @@ class _HerbEditActivityState extends State<HerbEditActivity> {
             if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
               return HerbFormActivity(
                 labelTextSubmit: 'Simpan perubahan',
-                editable: true,
                 formData: snapshot.data,
                 onSubmit: (formData) {
                   handleEdit(context, formData);

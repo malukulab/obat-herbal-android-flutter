@@ -11,7 +11,10 @@ class CardPressabelHerb extends StatelessWidget {
   final bool? isEditable;
   final GestureTapCallback? onDestroy;
   final GestureTapCallback? onEditable;
-  final String IMAGE_FALLBACK_PLECHOLDER = 'assets/images/placeholder.png';
+  // ignore: non_constant_identifier_names
+  final IMAGE_FALLBACK_PLECHOLDER = 'assets/images/placeholder.png';
+
+
 
   CardPressabelHerb({
     this.onPressed,
@@ -25,9 +28,15 @@ class CardPressabelHerb extends StatelessWidget {
   });
 
   Widget _buildSingleAction() {
+    // actions popupmenu.
+    // ignore: non_constant_identifier_names
+    final POPUPMENU_EDIT = 'edit';
+    // ignore: non_constant_identifier_names
+    final POPUPMENU_DELETE = 'delete';
+
     return PopupMenuButton(
       onSelected: (String? value) {
-        if (value == 'edit') {
+        if (value == POPUPMENU_EDIT) {
           return onEditable!();
         }
 
@@ -36,17 +45,15 @@ class CardPressabelHerb extends StatelessWidget {
       icon: Icon(Icons.more_vert_rounded, color: Colors.grey[700]),
       itemBuilder: (BuildContext context) {
       return List.of([
-        PopupMenuItem(value: 'edit', child: Text('Ubah')),
+        PopupMenuItem(value: POPUPMENU_EDIT, child: Text('Ubah')),
         PopupMenuItem(
-          value: 'delete',
+          value: POPUPMENU_DELETE,
           child: Text('Hapus', style: TextStyle(color: Colors.red))),
       ]);
     });
   }
 
   ImageProvider<Object> _buildResolveCardImage(String? pathOfImage) {
-    print('photo ${pathOfImage ?? "kosong gan"}');
-
     if (pathOfImage!.isNotEmpty) {
       return FileImage(File(pathOfImage));
     }
@@ -72,7 +79,7 @@ class CardPressabelHerb extends StatelessWidget {
                     color: Colors.grey.withOpacity(0.3),
                     spreadRadius: 1,
                     blurRadius: 10,
-                    offset: Offset(0, 2), // changes position of shadow
+                    offset: Offset(0, 2),
                   ),
                 ],
                 borderRadius: BorderRadius.circular(3.0),
