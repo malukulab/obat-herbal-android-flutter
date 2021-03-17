@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:obat_herbal_android/simple_validator.dart';
-import 'package:obat_herbal_android/herb_repository_impl.dart';
+import 'package:obat_herbal_android/herb_dao_impl.dart';
 import './_form_activity.dart';
 
 class HerbEditActivity extends StatefulWidget {
@@ -16,7 +16,7 @@ class HerbEditActivity extends StatefulWidget {
 
 class _HerbEditActivityState extends State<HerbEditActivity> {
 
-  final herbRepository = HerbRepositoryImpl();
+  final herbDao = HerbDaoImpl();
   Future<Map<String, dynamic>>? herb;
 
 
@@ -24,14 +24,14 @@ class _HerbEditActivityState extends State<HerbEditActivity> {
   void initState() {
     super.initState();
 
-    herb = herbRepository.findByid(widget.id);
+    herb = herbDao.findByid(widget.id);
   }
 
 
   void handleEdit(BuildContext context, Map<String, dynamic> formData) async {
     String? _message;
     try {
-      await herbRepository.update(formData, widget.id);
+      await herbDao.update(formData, widget.id);
       _message = 'Berhasil menyimpan perubahan';
     }catch(err) {
       _message = 'Terjadil kesalahan, coba lagi nanti!';

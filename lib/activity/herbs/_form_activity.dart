@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -58,8 +57,11 @@ class _HerbFormActivityState extends State<HerbFormActivity> {
     bool isFormValidateNotFalsy = _formKey.currentState!.validate();
 
     if (isFormValidateNotFalsy) {
+      // ignore: non_constant_identifier_names
+      final FALLBACK_PHOTO = '';
+
       Map<String, dynamic> formData = {
-        'photo': (await _resolveImagePath) ?? '',
+        'photo': (await _resolveImagePath) ?? FALLBACK_PHOTO,
         'title': textFieldTitle.text,
         'description': textFieldDescription.text,
       };

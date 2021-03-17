@@ -1,10 +1,10 @@
 import 'package:sqflite/sqflite.dart';
 
-import 'crud_repository.dart';
-import 'herb_repository.dart';
+import 'crud_dao.dart';
+import 'herb_dao.dart';
 import 'mysqlite_connection.dart';
 
-class HerbRepositoryImpl implements HerbRepository, CrudRepository<Map<String, dynamic>> {
+class HerbDaoImpl implements HerbDao, CrudDao<Map<String, dynamic>> {
   final MySqliteConnection con = MySqliteConnection();
 
 

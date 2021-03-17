@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:obat_herbal_android/simple_validator.dart';
-import 'package:obat_herbal_android/herb_repository_impl.dart';
+import 'package:obat_herbal_android/herb_dao_impl.dart';
 import './_form_activity.dart';
 
 class HerbCreationActivity extends StatelessWidget {
 
-  final herbRepository = HerbRepositoryImpl();
+  final herbDao = HerbDaoImpl();
 
 
   void handleCreation(context, formData) async {
     String? message;
 
     try {
-      await herbRepository.create(formData);
+      await herbDao.create(formData);
       message = 'Berhasil menambahkan data';
     }catch (err){
       message = 'Terjadi kesalahan, coba nanti!';

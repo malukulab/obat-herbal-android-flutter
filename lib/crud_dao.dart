@@ -1,4 +1,4 @@
-abstract class CrudRepository<T> {
+abstract class CrudDao<T> {
   Future<bool> create(T data);
 
   Future<bool> delete(int id);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:obat_herbal_android/activity/herbs/show_activity.dart';
 import 'package:obat_herbal_android/widgets/cardpressable_herb.dart';
-import 'package:obat_herbal_android/herb_repository_impl.dart';
+import 'package:obat_herbal_android/herb_dao_impl.dart';
 import './about_activity.dart';
 import 'herbs/edit_activity.dart';
 import 'herbs/creation_activity.dart';
@@ -17,19 +17,19 @@ class HomeActivity extends StatefulWidget {
 
 class _HomeActivityState extends State<HomeActivity> {
 
-  final herbRepository = HerbRepositoryImpl();
+  final herbDao = HerbDaoImpl();
   Future<List<Map<String, dynamic>>>? herbs;
 
   @override
   void initState() {
     super.initState();
 
-    herbs = herbRepository.findAll();
+    herbs = herbDao.findAll();
   }
 
   void refreshListView() {
     setState(() {
-      herbs = herbRepository.findAll();
+      herbs = herbDao.findAll();
     });
   }
 
@@ -56,7 +56,7 @@ class _HomeActivityState extends State<HomeActivity> {
 
   void handleToShowActivity(BuildContext context, int id) async {
     try {
-      Map<String, dynamic> _data = await herbRepository.findByid(id);
+      Map<String, dynamic> _data = await herbDao.findByid(id);
       Navigator.push(
       context,
       MaterialPageRoute(
@@ -74,7 +74,7 @@ class _HomeActivityState extends State<HomeActivity> {
     String? _message;
 
     try {
-      bool isDeleted = await herbRepository.delete(id);
+      bool isDeleted = await herbDao.delete(id);
        if (isDeleted) {
           refreshListView();
           _message = '👍 Data berhasil dihapus!';
